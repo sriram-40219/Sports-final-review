@@ -64,6 +64,13 @@ SportsHub is a full-stack, enterprise-grade sports management and fan engagement
 - **Third-Party API**: TheSportsDB public API integration for live global football league data.
 - **Deployment**: Vercel Serverless Functions (`api/index.js`) and Vite static production build.
 
+### ⚛️ React Core Concepts Implemented
+- **`useState` Hook**: Reactive local component state used across navigation, modals, live counters, and forms.
+- **Component `Props`**: Clean component hierarchy with reusable UI elements (e.g. `StatCard.jsx` receiving `label`, `value`, `icon`, `color`, `bg` props from parent dashboards).
+- **Controlled Forms**: User registration and login forms in `AuthModal.jsx` are fully controlled via React state binding (`value={formData.email}` and `onChange={handleChange}`).
+- **Session Storage (`sessionStorage`)**: Used in `AppContext.jsx` for active browser tab session tracking, view state preservation, and login activity logs.
+- **Local Storage (`localStorage`)**: Used for persistent client caching, user credentials, and league data.
+
 ---
 
 ## 📂 Project Structure
