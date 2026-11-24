@@ -1,5 +1,6 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
+import { StatCard } from '../../components/StatCard';
 import { 
   ShieldCheck, 
   Trophy, 
@@ -75,47 +76,36 @@ export const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* KPI Stats (CSS Grid 4-cols) */}
+      {/* KPI Stats (CSS Grid 4-cols using reusable StatCard with Props) */}
       <div className="grid-cols-4" style={{ marginBottom: '28px' }}>
-        <div className="kpi-card">
-          <div className="kpi-icon-wrapper" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34d399' }}>
-            <Trophy size={24} />
-          </div>
-          <div className="kpi-details">
-            <div className="kpi-value">{leagues.length}</div>
-            <div className="kpi-label">Leagues Managed</div>
-          </div>
-        </div>
-
-        <div className="kpi-card">
-          <div className="kpi-icon-wrapper" style={{ background: 'rgba(59, 130, 246, 0.15)', color: '#60a5fa' }}>
-            <Users size={24} />
-          </div>
-          <div className="kpi-details">
-            <div className="kpi-value">{teams.length}</div>
-            <div className="kpi-label">Active Clubs</div>
-          </div>
-        </div>
-
-        <div className="kpi-card">
-          <div className="kpi-icon-wrapper" style={{ background: 'rgba(239, 68, 68, 0.15)', color: '#f87171' }}>
-            <Activity size={24} />
-          </div>
-          <div className="kpi-details">
-            <div className="kpi-value">{liveMatches.length}</div>
-            <div className="kpi-label">Matches Live Now</div>
-          </div>
-        </div>
-
-        <div className="kpi-card">
-          <div className="kpi-icon-wrapper" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24' }}>
-            <DollarSign size={24} />
-          </div>
-          <div className="kpi-details">
-            <div className="kpi-value">${totalRevenue.toLocaleString()}</div>
-            <div className="kpi-label">Ticket Revenue</div>
-          </div>
-        </div>
+        <StatCard 
+          label="Leagues Managed" 
+          value={leagues.length} 
+          icon={<Trophy size={24} />} 
+          color="#34d399" 
+          bg="rgba(16, 185, 129, 0.15)" 
+        />
+        <StatCard 
+          label="Active Clubs" 
+          value={teams.length} 
+          icon={<Users size={24} />} 
+          color="#60a5fa" 
+          bg="rgba(59, 130, 246, 0.15)" 
+        />
+        <StatCard 
+          label="Matches Live Now" 
+          value={liveMatches.length} 
+          icon={<Activity size={24} />} 
+          color="#f87171" 
+          bg="rgba(239, 68, 68, 0.15)" 
+        />
+        <StatCard 
+          label="Ticket Revenue" 
+          value={`$${totalRevenue.toLocaleString()}`} 
+          icon={<DollarSign size={24} />} 
+          color="#fbbf24" 
+          bg="rgba(245, 158, 11, 0.15)" 
+        />
       </div>
 
       {/* Quick Action Matrix (CSS Grid) */}

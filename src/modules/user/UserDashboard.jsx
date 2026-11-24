@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
+import { StatCard } from '../../components/StatCard';
 import { 
   Activity, 
   Calendar, 
@@ -143,48 +144,37 @@ export const UserDashboard = () => {
       )}
 
       {/* =========================================================================
-          KEY STATS / KPI GRID (CSS GRID)
+          KEY STATS / KPI GRID (CSS GRID using reusable StatCard with Props)
           ========================================================================= */}
       <div className="grid-cols-4" style={{ marginBottom: '28px' }}>
-        <div className="kpi-card">
-          <div className="kpi-icon-wrapper" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34d399' }}>
-            <Trophy size={24} />
-          </div>
-          <div className="kpi-details">
-            <div className="kpi-value">{leagues.length}</div>
-            <div className="kpi-label">Active Leagues</div>
-          </div>
-        </div>
-
-        <div className="kpi-card">
-          <div className="kpi-icon-wrapper" style={{ background: 'rgba(59, 130, 246, 0.15)', color: '#60a5fa' }}>
-            <Users size={24} />
-          </div>
-          <div className="kpi-details">
-            <div className="kpi-value">{teams.length}</div>
-            <div className="kpi-label">Pro Teams</div>
-          </div>
-        </div>
-
-        <div className="kpi-card">
-          <div className="kpi-icon-wrapper" style={{ background: 'rgba(239, 68, 68, 0.15)', color: '#f87171' }}>
-            <Activity size={24} />
-          </div>
-          <div className="kpi-details">
-            <div className="kpi-value">{fixtures.filter(f => f.status === 'LIVE').length}</div>
-            <div className="kpi-label">Live Fixtures</div>
-          </div>
-        </div>
-
-        <div className="kpi-card">
-          <div className="kpi-icon-wrapper" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24' }}>
-            <Calendar size={24} />
-          </div>
-          <div className="kpi-details">
-            <div className="kpi-value">{fixtures.filter(f => f.status === 'UPCOMING').length}</div>
-            <div className="kpi-label">Upcoming Games</div>
-          </div>
-        </div>
+        <StatCard 
+          label="Active Leagues" 
+          value={leagues.length} 
+          icon={<Trophy size={24} />} 
+          color="#34d399" 
+          bg="rgba(16, 185, 129, 0.15)" 
+        />
+        <StatCard 
+          label="Pro Teams" 
+          value={teams.length} 
+          icon={<Users size={24} />} 
+          color="#60a5fa" 
+          bg="rgba(59, 130, 246, 0.15)" 
+        />
+        <StatCard 
+          label="Live Fixtures" 
+          value={fixtures.filter(f => f.status === 'LIVE').length} 
+          icon={<Activity size={24} />} 
+          color="#f87171" 
+          bg="rgba(239, 68, 68, 0.15)" 
+        />
+        <StatCard 
+          label="Upcoming Games" 
+          value={fixtures.filter(f => f.status === 'UPCOMING').length} 
+          icon={<Calendar size={24} />} 
+          color="#fbbf24" 
+          bg="rgba(245, 158, 11, 0.15)" 
+        />
       </div>
 
       {/* =========================================================================

@@ -31,6 +31,25 @@ const saveStorage = (key, value) => {
   }
 };
 
+// SessionStorage Helper functions (for active browser session tracking)
+const loadSession = (key, fallback) => {
+  try {
+    const item = sessionStorage.getItem(`slms_${key}`);
+    return item ? JSON.parse(item) : fallback;
+  } catch (e) {
+    console.error(`Error reading ${key} from sessionStorage`, e);
+    return fallback;
+  }
+};
+
+const saveSession = (key, value) => {
+  try {
+    sessionStorage.setItem(`slms_${key}`, JSON.stringify(value));
+  } catch (e) {
+    console.error(`Error saving ${key} to sessionStorage`, e);
+  }
+};
+
 export const AppProvider = ({ children }) => {
   // Authentication & Session
   const [users, setUsers] = useState(() => loadStorage('users', INITIAL_USERS));
@@ -82,6 +101,16 @@ export const AppProvider = ({ children }) => {
   useEffect(() => saveStorage('poll', poll), [poll]);
   useEffect(() => saveStorage('notifications', notifications), [notifications]);
 
+  // Sync active browsing session to SessionStorage
+  useEffect(() => {
+    saveSession('active_tab', {
+      currentView,
+      currentModule,
+      role: currentUser?.role || 'guest',
+      lastActiveAt: new Date().toLocaleTimeString()
+    });
+  }, [currentView, currentModule, currentUser]);
+
   // Auth Functions
   const login = (email, password) => {
     const user = users.find(u => u.email.toLowerCase() === email.trim().toLowerCase());
@@ -96,6 +125,7 @@ export const AppProvider = ({ children }) => {
 
     setCurrentUser(user);
     saveStorage('current_user', user);
+    saveSession('session_user', { id: user.id, name: user.name, role: user.role, email: user.email, loggedAt: new Date().toISOString() });
     setAuthModalOpen(false);
 
     // Module-wise redirection based on Role (Requirement #6)
@@ -139,6 +169,7 @@ export const AppProvider = ({ children }) => {
     setUsers(updatedUsers);
     setCurrentUser(newUser);
     saveStorage('current_user', newUser);
+    saveSession('session_user', { id: newUser.id, name: newUser.name, role: newUser.role, email: newUser.email, loggedAt: new Date().toISOString() });
     setAuthModalOpen(false);
 
     // Module-wise redirection
@@ -158,6 +189,8 @@ export const AppProvider = ({ children }) => {
   const logout = () => {
     setCurrentUser(null);
     localStorage.removeItem('slms_current_user');
+    sessionStorage.removeItem('slms_session_user');
+    sessionStorage.removeItem('slms_active_tab');
     setCurrentModule('user');
     setCurrentView('dashboard');
     showToast('You have been logged out successfully.', 'info');
